@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\tyboy\\AndroidStudioProjects\\MADKey.jks')
+            storePassword 'password'
+            keyAlias 'firstkey'
+            keyPassword 'password'
+        }
+    }
     namespace 'edu.northeastern.numad23sp_tylerpoff'
     compileSdk 32
 
