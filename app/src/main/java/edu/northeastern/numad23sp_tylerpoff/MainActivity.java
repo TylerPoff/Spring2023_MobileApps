@@ -16,9 +16,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button btn_about_me = findViewById(R.id.btnAboutMe);
         Button btn_clicky_clicky = findViewById(R.id.btnClickyClicky);
-        btn_about_me.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "Name: Tyler Poff\nEmail: poff.t@northeastern.edu"
-        , Toast.LENGTH_LONG).show());
         btn_clicky_clicky.setOnClickListener(v -> openActivityClickyClicky());
+        btn_about_me.setOnClickListener(v -> openActivityAboutMe());
+    }
+    public void openActivityAboutMe() {
+        Intent intentAboutMe = new Intent(this, AboutMe.class);
+        startActivity(intentAboutMe);
     }
     public void openActivityClickyClicky() {
         Intent intentClickyClicky = new Intent(this, ClickyClicky.class);
