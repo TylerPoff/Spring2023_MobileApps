@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,26 +19,54 @@ public class Primes extends AppCompatActivity {
     private Button btnEndPrimes;
     private TextView lastPrimeTV;
     private TextView checkingPrimeTV;
+    private CheckBox primeSwitch;
     private Handler textHandler = new Handler();
     private boolean terminate;
     private boolean isSearching;
+    private int checking;
+    private int lastPrime;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primes);
-        terminate = false;
-        isSearching = false;
+        if (savedInstanceState == null) {
+            terminate = false;
+            isSearching = false;
+            checking = 3;
+            lastPrime = 0;
+        }
         cancelSearch();
         startSearch();
+        primeSwitch = findViewById(R.id.primeSwitch);
         lastPrimeTV = findViewById(R.id.lastPrimeTV);
         checkingPrimeTV = findViewById(R.id.checkingPrimeTV);
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString("checking_tv", checkingPrimeTV.getText().toString());
+        outState.putString("last_prime_tv", lastPrimeTV.getText().toString());
+        outState.putBoolean("is_searching", isSearching);
+        outState.putBoolean("terminate", terminate);
+        outState.putInt("checking", checking);
+        outState.putInt("last_prime", lastPrime);
     }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        checkingPrimeTV.setText(savedInstanceState.getString("checking_tv"));
+        lastPrimeTV.setText(savedInstanceState.getString("last_prime_tv"));
+        isSearching = savedInstanceState.getBoolean("is_searching");
+        checking = savedInstanceState.getInt("checking");
+        lastPrime = savedInstanceState.getInt("last_prime");
+        terminate = savedInstanceState.getBoolean("terminate");
+        if(isSearching) {
+            runOnRunnableThread();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if(isSearching) {
@@ -65,6 +94,8 @@ public class Primes extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 terminate = true;
+                checking = 3;
+                lastPrime = 0;
             }
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
@@ -76,6 +107,7 @@ public class Primes extends AppCompatActivity {
         btnEndPrimes = findViewById(R.id.btnEndPrimes);
         btnEndPrimes.setOnClickListener(v -> createDialogTerminate());
     }
+
     public void startSearch() {
         btnStartPrimes = findViewById(R.id.btnStartPrimes);
         btnStartPrimes.setOnClickListener(new View.OnClickListener() {
@@ -108,16 +140,16 @@ public class Primes extends AppCompatActivity {
     class primeSearch implements Runnable {
         @Override
         public void run() {
-            int prime = 0;
-            for (int i = 3; i <= 2147483647; i = i + 2) {
+            for (int i = checking; i <= 2147483647; i = i + 2) {
                 if(terminate) {
                     break;
                 }
                 if (isPrime(i)) {
-                    prime = i;
+                    lastPrime = i;
                 }
+                checking = i;
                 final int iFinal = i;
-                final int primeFinal = prime;
+                final int primeFinal = lastPrime;
                 textHandler.post(() -> {
                     checkingPrimeTV.setText("Checking: " + iFinal);
                     lastPrimeTV.setText("Last Prime Found: " + primeFinal);
