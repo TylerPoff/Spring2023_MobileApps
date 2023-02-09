@@ -23,7 +23,7 @@ public class LinkViewHolder extends RecyclerView.ViewHolder {
             try{
                 String Url = urlTV.getText().toString();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Url);
+                intent.setData(Uri.parse(Url));
                 itemView.getContext().startActivity(intent);
             }catch(Exception e){
                 Toast.makeText(itemView.getContext(), "Invalid url", Toast.LENGTH_SHORT).show();

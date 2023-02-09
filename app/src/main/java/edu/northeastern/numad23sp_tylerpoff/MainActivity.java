@@ -17,9 +17,12 @@ public class MainActivity extends AppCompatActivity {
         Button btn_about_me = findViewById(R.id.btnAboutMe);
         Button btn_clicky_clicky = findViewById(R.id.btnClickyClicky);
         Button btn_link_collector = findViewById(R.id.btnLinkCollector);
+        Button btn_primes = findViewById(R.id.btnPrimes);
+
         btn_clicky_clicky.setOnClickListener(v -> openActivityClickyClicky());
         btn_about_me.setOnClickListener(v -> openActivityAboutMe());
         btn_link_collector.setOnClickListener(v -> openActivityLinkCollector());
+        btn_primes.setOnClickListener(v -> openActivityPrimes());
 
     }
     public void openActivityAboutMe() {
@@ -33,5 +36,9 @@ public class MainActivity extends AppCompatActivity {
     public void openActivityLinkCollector() {
         Intent intentLinkCollector = new Intent(this, LinkCollector.class);
         startActivity(intentLinkCollector);
+    }
+    public void openActivityPrimes() {
+        Intent intentPrimes = new Intent(this, Primes.class);
+        startActivity(intentPrimes);
     }
 }
