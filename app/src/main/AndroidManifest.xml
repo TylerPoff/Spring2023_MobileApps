@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -14,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NUMAD23Sp_TylerPoff"
         tools:targetApi="31">
+        <service
+            android:name=".LocationService"
+            android:foregroundServiceType="location"/>
+        <activity
+            android:name=".LocationFinder"
+            android:exported="false" />
         <activity
             android:name=".Primes"
             android:exported="false">
